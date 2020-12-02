@@ -2,7 +2,7 @@
 
 ### Goal: Complete the exercises from Fullstack Open Week 3: [https://fullstackopen.com/en/part3](https://fullstackopen.com/en/part3)
 
-### How to submit your code for review:
+### How to submit your code for review :
 
 - Fork and clone this repo
 - Create a new branch called solutions
