@@ -19,6 +19,8 @@ const App = () => {
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      margin: 50,
+
     },
     paper: {
       padding: theme.spacing(2),
@@ -197,7 +199,7 @@ const App = () => {
   const classes = useStyles();
   return (
     <div className={classes.root} >
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper className={classes.header}>
             <h2>Phone Book</h2>
