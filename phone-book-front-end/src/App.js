@@ -4,6 +4,9 @@ import Filter from "./Filter";
 import Notification from "./Notification";
 import PersonForm from "./PersonForm";
 import PhoneBook from "./PhoneBook";
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +15,36 @@ const App = () => {
   const [showFilter, setshowFilter] = useState("");
   const [notification, setNotification] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      justifyItems: 'center',
+      color: theme.palette.text.secondary,
+      overflow: 'auto',
+      height: 400,
+    },
+    header: {
+      padding: theme.spacing(2),
+      justifyItems: 'center',
+      color: theme.palette.text.secondary,
+      overflow: 'auto',
+      textAlign: 'center'
+    },
+    addFriend: {
+      padding: theme.spacing(2),
+      justifyItems: 'center',
+      color: theme.palette.text.secondary,
+      overflow: 'auto',
+
+      height: 650,
+      justifyContent: 'center'
+
+    },
+  }));
 
   // show data on the screen
   useEffect(() => {
@@ -32,13 +65,10 @@ const App = () => {
 
     // if name is already in phone book return true and alert user
     if (persons.some(e => e.name === newName)) {
-
       // first name equal to that name 
       let personId = persons.find(item => item.name === newName);
-
       // assigning whats in person obj to person id to update the entry
       let updatedEntry = Object.assign(personId, personObject);
-
       // alert the user  to update name  and / or  number
       if (
         window.confirm(
@@ -89,17 +119,16 @@ const App = () => {
               // alert user
               showMessage(`User ${newName} has been added to the phone book`);
             })
-              // <-----------------------------------COME BACK AND CHECK ---------------------------------------->
+            // <-----------------------------------COME BACK AND CHECK ---------------------------------------->
             .catch(error => {
               console.log(error.response.data.error);
               return showMessage(
-                `Failed to add number. More about error: ${
-                  error.response.data.error
+                `Failed to add number. More about error: ${error.response.data.error
                 }`,
                 false
               );
             });
-            // make a get requests of updated data
+          // make a get requests of updated data
           personsService
             .getAll()
             .then(response => {
@@ -122,15 +151,14 @@ const App = () => {
           setPersons(persons.filter(item => item.id !== person.id));
           showMessage(`${person.name} has been removed from the phone book`);
         })
-         // <-----------------------------------COME BACK AND CHECK ---------------------------------------->
+        // <-----------------------------------COME BACK AND CHECK ---------------------------------------->
         .catch(error => {
           showMessage(
-            `Removal failed. User ${
-              person.name
+            `Removal failed. User ${person.name
             } has already been removed from the phone book.`,
             false
           );
-            // make a get requests of updated data
+          // make a get requests of updated data
           personsService
             .getAll()
             .then(response => {
@@ -166,27 +194,47 @@ const App = () => {
   };
 
   // console.log('this is persons', persons)
-
+  const classes = useStyles();
   return (
-    <div>
-      <h2>Phonebook</h2>
-      <Notification notification={notification} success={success} />
-      <Filter showFilter={showFilter} setshowFilter={setshowFilter} />
-      <h2>add a new</h2>
-      <PersonForm
-        addNewName={addNewName}
-        newName={newName}
-        handleNameChange={handleNameChange}
-        handleNumberChange={handleNumberChange}
-      />
-      <h2>Numbers</h2>
-      <ul>
-        <PhoneBook
-          persons={persons}
-          showFilter={showFilter}
-          removeEntry={removeEntry}
-        />
-      </ul>
+    <div className={classes.root} >
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Paper className={classes.header}>
+            <h2>Phone Book</h2>
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper className={classes.addFriend}>
+            <Paper className={classes.header}>
+              <h2>Add A New Friend</h2>
+            </Paper>
+            <PersonForm
+              addNewName={addNewName}
+              newName={newName}
+              handleNameChange={handleNameChange}
+              handleNumberChange={handleNumberChange}
+            />
+          </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper className={classes.addFriend}>
+            <Paper className={classes.header}>
+              <h2>Numbers</h2>
+            </Paper>
+            <Notification notification={notification} success={success} />
+            <Filter showFilter={showFilter} setshowFilter={setshowFilter} />
+            <ul>
+            <Paper className={classes.paper}>
+                <PhoneBook
+                  persons={persons}
+                  showFilter={showFilter}
+                  removeEntry={removeEntry}
+                />
+              </Paper>
+            </ul>
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 };
